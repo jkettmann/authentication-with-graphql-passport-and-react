@@ -1,4 +1,6 @@
 import express from 'express';
+import session from 'express-session';
+import uuid from 'uuid/v4';
 import passport from 'passport';
 import { buildContext } from 'graphql-passport';
 import { ApolloServer } from 'apollo-server-express';
@@ -9,11 +11,21 @@ import resolvers from './resolvers';
 import initPassport from './initPassport';
 
 const PORT = 4000;
+const SESSION_SECRECT = 'bad secret';
 
 initPassport({ User });
 
 const app = express();
+app.use(session({
+  genid: (req) => uuid(),
+  secret: SESSION_SECRECT,
+  resave: false,
+  saveUninitialized: false,
+  // use secure cookies for production meaning they will only be sent via https
+  //cookie: { secure: true }
+}));
 app.use(passport.initialize());
+app.use(passport.session());
 
 const server = new ApolloServer({
   typeDefs,

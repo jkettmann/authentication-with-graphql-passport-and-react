@@ -10,6 +10,16 @@ const initPassport = ({ User }) => {
       done(error, matchingUser);
     }),
   );
+
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser((id, done) => {
+    const users = User.getUsers();
+    const matchingUser = users.find(user => user.id === id);
+    done(null, matchingUser);
+  });
 };
 
 export default initPassport;
