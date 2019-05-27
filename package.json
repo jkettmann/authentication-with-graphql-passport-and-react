@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "apollo-boost": "^0.4.0",
     "apollo-server-express": "^2.5.0",
     "express": "^4.17.1",
     "express-session": "^1.16.1",
@@ -27,12 +28,13 @@
     "nodemon": "^1.19.1",
     "passport": "^0.4.0",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "npm run start:api",
+    "start": "npm-run-all --parallel start:api start:app",
     "start:app": "react-scripts start",
     "start:api": "nodemon --watch ./api --exec \"babel-node --inspect --presets=@babel/env ./api/index.js\"",
     "build": "react-scripts build",
@@ -55,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/node": "^7.4.5"
+    "@babel/node": "^7.4.5",
+    "npm-run-all": "^4.1.5"
   }
 }

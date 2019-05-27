@@ -1,6 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import uuid from 'uuid/v4';
+import cors from 'cors';
 import passport from 'passport';
 import { buildContext } from 'graphql-passport';
 import { ApolloServer } from 'apollo-server-express';
@@ -16,6 +17,13 @@ const SESSION_SECRECT = 'bad secret';
 initPassport({ User });
 
 const app = express();
+
+const corsOptions = {
+  origin: ['http://localhost:3000'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(session({
   genid: (req) => uuid(),
   secret: SESSION_SECRECT,
@@ -24,6 +32,7 @@ app.use(session({
   // use secure cookies for production meaning they will only be sent via https
   //cookie: { secure: true }
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -38,7 +47,7 @@ const server = new ApolloServer({
   },
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, cors: false });
 
 app.listen({ port: PORT }, () => {
   console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
