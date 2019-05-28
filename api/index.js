@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express';
 import session from 'express-session';
 import uuid from 'uuid/v4';
@@ -35,6 +36,12 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: 'http://localhost:3000',
+  failureRedirect: 'http://localhost:3000',
+}));
 
 const server = new ApolloServer({
   typeDefs,
