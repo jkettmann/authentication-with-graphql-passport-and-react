@@ -1,3 +1,5 @@
+import uuid from 'uuid/v4';
+
 const resolvers = {
   Query: {
     currentUser: (parent, args, context) => {
@@ -6,7 +8,24 @@ const resolvers = {
   },
   Mutation: {
     signup: (parent, { firstName, lastName, email, password }, context) => {
-      console.log('signup', firstName, lastName, email, password);
+      const existingUsers = context.User.getUsers();
+      const userWithEmailAlreadyExists = !!existingUsers.find(user => user.email === email);
+
+      if (userWithEmailAlreadyExists) {
+        throw new Error('User with email already exists');
+      }
+
+      const newUser = {
+        id: uuid(),
+        firstName,
+        lastName,
+        email,
+        password,
+      };
+
+      context.User.addUser(newUser);
+
+      return { user: newUser };
     },
     login: async (parent, { email, password }, context) => {
       const { user } = await context.authenticate('graphql-local', { email, password });

@@ -18,7 +18,7 @@ app.use(passport.initialize());
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => buildContext({ req, res }),
+  context: ({ req, res }) => buildContext({ req, res, User }),
   playground: {
     settings: {
       'request.credentials': 'same-origin',
