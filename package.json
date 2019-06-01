@@ -22,7 +22,9 @@
     "apollo-server-express": "^2.5.0",
     "express": "^4.17.1",
     "graphql": "^14.3.1",
+    "graphql-passport": "^0.1.5",
     "nodemon": "^1.19.1",
+    "passport": "^0.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"

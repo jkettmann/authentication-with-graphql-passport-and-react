@@ -9,7 +9,8 @@ const resolvers = {
       console.log('signup', firstName, lastName, email, password);
     },
     login: async (parent, { email, password }, context) => {
-      console.log('login', email, password);
+      const { user } = await context.authenticate('graphql-local', { email, password });
+      return { user }
     },
     logout: (parent, args, context) => {
       console.log('logout');

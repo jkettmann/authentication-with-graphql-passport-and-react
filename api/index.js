@@ -1,15 +1,24 @@
 import express from 'express';
+import passport from 'passport';
+import { buildContext } from 'graphql-passport';
 import { ApolloServer } from 'apollo-server-express';
+import User from './User';
 import typeDefs from './typeDefs';
 import resolvers from './resolvers';
 
+import initPassport from './initPassport';
+
 const PORT = 4000;
 
+initPassport({ User });
+
 const app = express();
+app.use(passport.initialize());
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req, res }) => buildContext({ req, res }),
   playground: {
     settings: {
       'request.credentials': 'same-origin',
